@@ -1,0 +1,4 @@
+[submodule "third_party/openthread"]
+	path = third_party/openthread
+	url = https://github.com/openthread/openthread
+	branch = master

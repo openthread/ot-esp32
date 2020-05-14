@@ -1,0 +1,41 @@
+*.a
+*.bak
+*.db
+*.flash
+*.gcda
+*.gcno
+*.log
+*.o
+*.lo
+*.la
+*.ninja*
+*.opendb
+*.orig
+*.pyc
+*.suo
+*.swn
+*.swo
+*.swp
+*.trs
+*.user
+*.bak
+*~
+.deps
+.dirstamp
+.DS_Store
+.local-version
+.libs
+.vagrant
+aclocal.m4
+autom4te.cache
+build
+
+# vscode
+.vscode
+
+# ESP-IDF skdconfig
+sdkconfig
+sdkconfig.old
+
+# GDB
+gdbinit
