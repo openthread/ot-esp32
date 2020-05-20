@@ -1,8 +1,15 @@
+[![Build][ot-esp32-gh-action-build-svg]][ot-esp32-gh-action-build]
+
+---
+
 # OpenThread on ESP32
 
 **ot-esp32** is a port of OpenThread for the [Espressif ESP32 platform](https://www.espressif.com/en/products/socs/esp32/overview), where OpenThread uses a [Radio Co-Processor (RCP) design](https://openthread.io/platforms#radio-co-processor-rcp), transmitting and receiving radio using an 802.15.4-capable SoC.
 
 For more information on OpenThread, see [openthread.io](https://openthread.io).
+
+[ot-esp32-gh-action-build]: https://github.com/openthread/ot-esp32/actions?query=workflow%3ABuild+branch%3Amaster+event%3Apush
+[ot-esp32-gh-action-build-svg]: https://github.com/openthread/ot-esp32/workflows/Build/badge.svg?branch=master&event=push
 
 ## Getting started
 
