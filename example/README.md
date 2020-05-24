@@ -59,7 +59,7 @@ Connect the ESP32 board and the nRF52840 DK:
 
 ![Connect-Devices](../doc/images/connect-devices.jpg)
 
-Ensure that the ESP32 board and the nRF52840 DK are power by the same computer over USB or share a common ground by connecting a third wire, ex. ESP32 GND <---> nRF52840 GND.
+Ensure that the ESP32 board and the nRF52840 DK are powered by the same computer over USB or share a common ground by connecting a third wire, ex. ESP32 GND <---> nRF52840 GND.
 
 ## Run the CLI application
 
