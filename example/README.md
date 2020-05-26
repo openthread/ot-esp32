@@ -40,7 +40,7 @@ Connect the nRF52840 DK to the Linux host and execute:
 ```shell
 cd third_party/openthread
 ./bootstrap
-make -f example/Makefile-nrf52840 CFLAGS="-DUART_HWFC_ENABLED=0"
+make -f examples/Makefile-nrf52840 CFLAGS="-DUART_HWFC_ENABLED=0"
 
 cd output/nrf52840/bin
 arm-none-eabi-objcopy -O ihex ot-rcp ot-rcp.hex
