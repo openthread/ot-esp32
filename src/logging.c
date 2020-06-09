@@ -57,17 +57,17 @@ OT_TOOL_WEAK void otPlatLog(otLogLevel aLogLevel, otLogRegion aLogRegion, const 
     switch (aLogLevel)
     {
     case OT_LOG_LEVEL_CRIT:
-        ESP_LOGE(OT_PLAT_LOG_TAG, "%s", logString);
+        ESP_LOGE(OT_PLAT_LOG_TAG, "%s\r", logString);
         break;
     case OT_LOG_LEVEL_WARN:
-        ESP_LOGW(OT_PLAT_LOG_TAG, "%s", logString);
+        ESP_LOGW(OT_PLAT_LOG_TAG, "%s\r", logString);
         break;
     case OT_LOG_LEVEL_NOTE:
     case OT_LOG_LEVEL_INFO:
-        ESP_LOGI(OT_PLAT_LOG_TAG, "%s", logString);
+        ESP_LOGI(OT_PLAT_LOG_TAG, "%s\r", logString);
         break;
     default:
-        ESP_LOGD(OT_PLAT_LOG_TAG, "%s", logString);
+        ESP_LOGD(OT_PLAT_LOG_TAG, "%s\r", logString);
         break;
     }
     va_end(args);
