@@ -95,8 +95,9 @@ void platformCliUartInit()
     // Tell VFS to use UART driver.
     esp_vfs_dev_uart_use_driver(OT_CLI_UART_NUM);
 
-    esp_vfs_dev_uart_set_rx_line_endings(ESP_LINE_ENDINGS_LF);
-    esp_vfs_dev_uart_set_tx_line_endings(ESP_LINE_ENDINGS_LF);
+    // A workaround to configure line-ending per UART for issue#5.
+    s_ctx[OT_CLI_UART_NUM]->rx_mode = ESP_LINE_ENDINGS_CRLF;
+    s_ctx[OT_CLI_UART_NUM]->tx_mode = ESP_LINE_ENDINGS_CRLF;
 
     sprintf(uartPath, "/dev/uart/%d", OT_CLI_UART_NUM);
     sCliUartFd = open(uartPath, O_RDWR | O_NONBLOCK);

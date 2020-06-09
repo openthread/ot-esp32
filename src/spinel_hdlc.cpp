@@ -316,6 +316,10 @@ void HdlcInterface::InitUart(void)
     // We have a driver now installed so set up the read/write functions to use driver also.
     esp_vfs_dev_uart_use_driver(OT_RADIO_UART_NUM);
 
+    // A workaround to configure line-ending per UART for issue#5.
+    s_ctx[OT_RADIO_UART_NUM]->rx_mode = ESP_LINE_ENDINGS_LF;
+    s_ctx[OT_RADIO_UART_NUM]->tx_mode = ESP_LINE_ENDINGS_LF;
+
     sprintf(uartPath, "/dev/uart/%d", OT_RADIO_UART_NUM);
     mUartFd = open(uartPath, O_RDWR | O_NONBLOCK);
 
