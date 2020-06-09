@@ -25,6 +25,14 @@ source $IDF_PATH/export.sh
 
 ### Build and flash the CLI application
 
+Clone this repository and fetch the referenced submodules:
+
+```shell
+git clone https://github.com/openthread/ot-esp32.git
+cd ot-esp32
+git submodule update --init
+```
+
 Connect the ESP32 board to the Linux host and execute:
 
 ```shell
