@@ -210,7 +210,14 @@ otError HdlcInterface::Write(const uint8_t *aFrame, uint16_t aLength)
 
     while (aLength)
     {
-        ssize_t rval = write(mUartFd, aFrame, aLength);
+        ssize_t rval;
+
+        // Configure ESP-IDF UART to never convert "\n" to "\r\n" just before
+        // writing radio frames through UART. This is a workaround for issue:
+        // https://github.com/openthread/ot-esp32/issues/5.
+        esp_vfs_dev_uart_set_tx_line_endings(ESP_LINE_ENDINGS_LF);
+        rval = write(mUartFd, aFrame, aLength);
+        esp_vfs_dev_uart_set_tx_line_endings(ESP_LINE_ENDINGS_CRLF);
 
         if (rval > 0)
         {

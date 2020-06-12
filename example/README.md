@@ -77,8 +77,6 @@ Connect to the ESP32 board from the Linux host:
 make monitor
 ```
 
-_Note: Dependending on your Linux distribution, the new line characters ('\r', '\n') may cause commands display issues. To have good look of the CLI, Connect the ESP32 board with advanced command `picocom -b 115200 /dev/ttyUSB0 --imap lfcrlf` (install `picocom` with `sudo apt-get install picocom`)._
-
 The CLI application is now in interactive mode and waiting for commands, start the OpenThread stack to verify your setup:
 
 ```shell

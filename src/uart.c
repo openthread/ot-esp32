@@ -96,7 +96,7 @@ void platformCliUartInit()
     esp_vfs_dev_uart_use_driver(OT_CLI_UART_NUM);
 
     esp_vfs_dev_uart_set_rx_line_endings(ESP_LINE_ENDINGS_LF);
-    esp_vfs_dev_uart_set_tx_line_endings(ESP_LINE_ENDINGS_LF);
+    esp_vfs_dev_uart_set_tx_line_endings(ESP_LINE_ENDINGS_CRLF);
 
     sprintf(uartPath, "/dev/uart/%d", OT_CLI_UART_NUM);
     sCliUartFd = open(uartPath, O_RDWR | O_NONBLOCK);
