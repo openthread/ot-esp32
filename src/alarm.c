@@ -48,6 +48,16 @@ static uint64_t sAlarmT0   = 0;
 static uint64_t sAlarmDt   = 0;
 static bool     sIsRunning = false;
 
+uint64_t otPlatTimeGet(void)
+{
+    struct timeval tv_now;
+
+    int err = gettimeofday(&tv_now, NULL);
+    VerifyOrDie(err == 0, OT_EXIT_FAILURE);
+
+    return (uint64_t)tv_now.tv_sec * OT_US_PER_S + tv_now.tv_usec;
+}
+
 void otPlatAlarmMilliStartAt(otInstance *aInstance, uint32_t aT0, uint32_t aDt)
 {
     OT_UNUSED_VARIABLE(aInstance);
