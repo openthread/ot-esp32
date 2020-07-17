@@ -40,23 +40,28 @@
 
 #include "error_handling.h"
 
-typedef struct Event {
-    int mFd;
-    bool mIsOpen;
-    bool mCounter;
+typedef struct Event
+{
+    int     mFd;
+    bool    mIsOpen;
+    bool    mCounter;
     _lock_t mLock;
 } Event;
 
 static Event sEvent = {
-    .mFd = -1,
-    .mIsOpen = false,
+    .mFd      = -1,
+    .mIsOpen  = false,
     .mCounter = false,
-    .mLock = 0, // lazy initialized
+    .mLock    = 0, // lazy initialized
 };
 
-static SemaphoreHandle_t * sSignalSemaphore = NULL;
+static SemaphoreHandle_t *sSignalSemaphore = NULL;
 
-static esp_err_t event_start_select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, SemaphoreHandle_t *signal_sem)
+static esp_err_t event_start_select(int                nfds,
+                                    fd_set *           readfds,
+                                    fd_set *           writefds,
+                                    fd_set *           exceptfds,
+                                    SemaphoreHandle_t *signal_sem)
 {
     esp_err_t error = ESP_OK;
 
@@ -65,14 +70,14 @@ static esp_err_t event_start_select(int nfds, fd_set *readfds, fd_set *writefds,
 
     _lock_acquire_recursive(&sEvent.mLock);
 
-    VerifyOrExit(sEvent.mIsOpen && nfds > 0 && FD_ISSET(sEvent.mFd, readfds),
-        _lock_release_recursive(&sEvent.mLock));
+    VerifyOrExit(sEvent.mIsOpen && nfds > 0 && FD_ISSET(sEvent.mFd, readfds), _lock_release_recursive(&sEvent.mLock));
 
     _lock_release_recursive(&sEvent.mLock);
 
     sSignalSemaphore = signal_sem;
 
-    if (sEvent.mCounter > 0) {
+    if (sEvent.mCounter > 0)
+    {
         esp_vfs_select_triggered(sSignalSemaphore);
     }
 
@@ -85,7 +90,7 @@ static void event_end_select()
     sSignalSemaphore = NULL;
 }
 
-static int event_open(const char * path, int flags, int mode)
+static int event_open(const char *path, int flags, int mode)
 {
     int fd = -1;
 
@@ -97,16 +102,16 @@ static int event_open(const char * path, int flags, int mode)
     VerifyOrExit(strcmp(path, OT_EVENT_VFS_SHORT_PATH) == 0, OT_NOOP);
     VerifyOrExit(!sEvent.mIsOpen, OT_NOOP);
 
-    sEvent.mFd = OT_RESERVED_FD_MIN;
+    sEvent.mFd     = OT_RESERVED_FD_MIN;
     sEvent.mIsOpen = true;
-    fd = sEvent.mFd;
+    fd             = sEvent.mFd;
 
 exit:
     _lock_release_recursive(&sEvent.mLock);
     return fd;
 }
 
-static ssize_t event_write(int fd, const void * data, size_t size)
+static ssize_t event_write(int fd, const void *data, size_t size)
 {
     ssize_t ret = -1;
 
@@ -130,7 +135,7 @@ exit:
     return ret;
 }
 
-static ssize_t event_read(int fd, void* data, size_t size)
+static ssize_t event_read(int fd, void *data, size_t size)
 {
     int ret = -1;
 
@@ -141,7 +146,7 @@ static ssize_t event_read(int fd, void* data, size_t size)
 
     VerifyOrExit(fd == sEvent.mFd && sEvent.mIsOpen, OT_NOOP);
 
-    ret = sEvent.mCounter;
+    ret             = sEvent.mCounter;
     sEvent.mCounter = 0;
 
 exit:
@@ -157,7 +162,7 @@ static int event_close(int fd)
 
     VerifyOrExit(fd == sEvent.mFd && sEvent.mIsOpen, OT_NOOP);
 
-    sEvent.mIsOpen = false;
+    sEvent.mIsOpen  = false;
     sEvent.mCounter = 0;
 
     ret = 0;
@@ -170,22 +175,22 @@ exit:
 static void event_register(void)
 {
     esp_vfs_t vfs = {
-        .flags = ESP_VFS_FLAG_DEFAULT,
-        .write = &event_write,
-        .open = &event_open,
-        .fstat = NULL,
-        .close = &event_close,
-        .read = &event_read,
-        .fcntl = NULL,
-        .fsync = NULL,
-        .access = NULL,
+        .flags        = ESP_VFS_FLAG_DEFAULT,
+        .write        = &event_write,
+        .open         = &event_open,
+        .fstat        = NULL,
+        .close        = &event_close,
+        .read         = &event_read,
+        .fcntl        = NULL,
+        .fsync        = NULL,
+        .access       = NULL,
         .start_select = &event_start_select,
-        .end_select = &event_end_select,
+        .end_select   = &event_end_select,
 #ifdef CONFIG_SUPPORT_TERMIOS
         .tcsetattr = NULL,
         .tcgetattr = NULL,
-        .tcdrain = NULL,
-        .tcflush = NULL,
+        .tcdrain   = NULL,
+        .tcflush   = NULL,
 #endif // CONFIG_SUPPORT_TERMIOS
     };
     ESP_ERROR_CHECK(esp_vfs_register(OT_EVENT_VFS_PREFIX, &vfs, NULL));
