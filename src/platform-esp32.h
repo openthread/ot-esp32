@@ -101,6 +101,45 @@
 #define OT_UART_RX_BUF_SIZE (UART_FIFO_LEN * 2)
 
 /**
+ * The minimum fd number reserved by the OpenThread platform driver.
+ *
+ * In case the application makes its VFS implementation, the fd range
+ * [OT_RESERVED_FD_MIN, OT_RESERVED_FD_MAX) should not be overlapped.
+ *
+ */
+#define OT_RESERVED_FD_MIN (8)
+
+/**
+ * The maximum fd number reserved by the OpenThread platform driver.
+ *
+ * In case the application makes its VFS implementation, the fd range
+ * [OT_RESERVED_FD_MIN, OT_RESERVED_FD_MAX) should not be overlapped.
+ *
+ */
+#define OT_RESERVED_FD_MAX (9)
+
+/**
+ * The prefix of event device path.
+ *
+ */
+#define OT_EVENT_VFS_PREFIX "/dev/event"
+
+/**
+ * The truncated path of virtual event file.
+ *
+ * This is the virtual event file that used to
+ * wake up a blocked select().
+ *
+ */
+#define OT_EVENT_VFS_SHORT_PATH "/ot"
+
+/**
+ * Full path to the virtual event file.
+ *
+ */
+#define OT_EVENT_VFS_PATH OT_EVENT_VFS_PREFIX OT_EVENT_VFS_SHORT_PATH
+
+/**
  * Milliseconds per Second.
  *
  */
@@ -219,6 +258,41 @@ void platformApiLockInit(void);
  *
  */
 void platformApiLockDeinit(void);
+
+/**
+ * This function initializes VFS driver of event file.
+ *
+ */
+void platformVfsEventInit(void);
+
+/**
+ * This function deinitialize VFS driver of event file.
+ *
+ */
+void platformVfsEventDeinit(void);
+
+/**
+ * This function updates event file events to the mainloop context.
+ *
+ * param[inout] aMainloop  The mainloop context.
+ *
+ */
+void platformVfsEventUpdate(otSysMainloopContext *aMainloop);
+
+/**
+ * This function process event file events.
+ *
+ * @param[in] aInstance  The OpenThread instance.
+ * @param[in] aMainloop  The mainloop context.
+ *
+ */
+void platformVfsEventProcess(otInstance *aInstance, const otSysMainloopContext *aMainloop);
+
+/**
+ * This function activates the event file.
+ *
+ */
+void platformVfsEventActivate(void);
 
 #ifdef __cplusplus
 }

@@ -54,6 +54,7 @@ void otSysInit(int argc, char *argv[])
         gPlatformPseudoResetWasRequested = false;
     }
 
+    platformVfsEventInit();
     platformApiLockInit();
     platformCliUartInit();
     platformRadioInit(/* aResetRadio */ true, /* aRestoreDataSetFromNcp */ false);
@@ -66,6 +67,7 @@ void otSysDeinit(void)
     platformRadioDeinit();
     platformCliUartDeinit();
     platformApiLockDeinit();
+    platformVfsEventDeinit();
 }
 
 bool otSysPseudoResetWasRequested(void)
@@ -86,10 +88,9 @@ void otSysMainloopInit(otSysMainloopContext *aMainloop)
 
 void otSysMainloopUpdate(otInstance *aInstance, otSysMainloopContext *aMainloop)
 {
+    platformVfsEventUpdate(aMainloop);
     platformAlarmUpdate(aMainloop);
-
     platformCliUartUpdate(aMainloop);
-
     platformRadioUpdate(aMainloop);
 
     if (otTaskletsArePending(aInstance))
@@ -107,7 +108,13 @@ int otSysMainloopPoll(otSysMainloopContext *aMainloop)
 
 void otSysMainloopProcess(otInstance *aInstance, const otSysMainloopContext *aMainloop)
 {
+    platformVfsEventProcess(aInstance, aMainloop);
     platformCliUartProcess(aInstance, aMainloop);
     platformRadioProcess(aInstance, aMainloop);
     platformAlarmProcess(aInstance, aMainloop);
+}
+
+void otSysMainloopBreak(void)
+{
+    platformVfsEventActivate();
 }
