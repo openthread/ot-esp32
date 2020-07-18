@@ -194,7 +194,6 @@ static void event_register(void)
 #endif // CONFIG_SUPPORT_TERMIOS
     };
     ESP_ERROR_CHECK(esp_vfs_register(OT_EVENT_VFS_PREFIX, &vfs, NULL));
-    ESP_ERROR_CHECK(esp_vfs_register_fd_range(&vfs, NULL, OT_RESERVED_FD_MIN, OT_RESERVED_FD_MAX));
 }
 
 /**
@@ -237,7 +236,7 @@ void platformVfsEventProcess(otInstance *aInstance, const otSysMainloopContext *
         // Consume the event.
         int cnt = read(sEventFd, NULL, 0);
 
-        ESP_LOGI(OT_PLAT_LOG_TAG, "external event received, count: %d", cnt);
+        ESP_LOGD(OT_PLAT_LOG_TAG, "external event received, count: %d", cnt);
     }
 }
 
