@@ -70,9 +70,7 @@ static esp_err_t event_start_select(int                nfds,
 
     _lock_acquire_recursive(&sEvent.mLock);
 
-    VerifyOrExit(sEvent.mIsOpen && nfds > 0 && FD_ISSET(sEvent.mFd, readfds), _lock_release_recursive(&sEvent.mLock));
-
-    _lock_release_recursive(&sEvent.mLock);
+    VerifyOrExit(sEvent.mIsOpen && nfds > 0 && FD_ISSET(sEvent.mFd, readfds), OT_NOOP);
 
     sSignalSemaphore = signal_sem;
 
@@ -82,6 +80,7 @@ static esp_err_t event_start_select(int                nfds,
     }
 
 exit:
+    _lock_release_recursive(&sEvent.mLock);
     return error;
 }
 
