@@ -140,6 +140,15 @@ int otSysMainloopPoll(otSysMainloopContext *aMainloop);
 void otSysMainloopProcess(otInstance *aInstance, const otSysMainloopContext *aMainloop);
 
 /**
+ * This function breaks the mainloop.
+ *
+ * @note This function is designed to break the OpenThread mainloop in case there are
+ *       external events which should be handled immediately.
+ *
+ */
+void otSysMainloopBreak(void);
+
+/**
  * This functions locks the OpenThread API lock.
  *
  * Every OT APIs that takes an otInstance argument
