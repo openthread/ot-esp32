@@ -44,24 +44,25 @@ typedef struct Event
 {
     int     mFd;
     bool    mIsOpen;
-    bool    mCounter;
+    uint8_t mCounter;
     _lock_t mLock;
 } Event;
 
 static Event sEvent = {
     .mFd      = -1,
     .mIsOpen  = false,
-    .mCounter = false,
+    .mCounter = 0,
     .mLock    = 0, // lazy initialized
 };
 
-static SemaphoreHandle_t *sSignalSemaphore = NULL;
+static esp_vfs_select_sem_t sSignalSemaphore = {.is_sem_local = false, .sem = NULL};
 
-static esp_err_t event_start_select(int                nfds,
-                                    fd_set *           readfds,
-                                    fd_set *           writefds,
-                                    fd_set *           exceptfds,
-                                    SemaphoreHandle_t *signal_sem)
+static esp_err_t event_start_select(int                  nfds,
+                                    fd_set *             readfds,
+                                    fd_set *             writefds,
+                                    fd_set *             exceptfds,
+                                    esp_vfs_select_sem_t signal_sem,
+                                    void **              end_select_args)
 {
     esp_err_t error = ESP_OK;
 
@@ -84,9 +85,10 @@ exit:
     return error;
 }
 
-static void event_end_select()
+static esp_err_t event_end_select(void *end_select_args)
 {
-    sSignalSemaphore = NULL;
+    memset(&sSignalSemaphore, 0, sizeof sSignalSemaphore);
+    return ESP_OK;
 }
 
 static int event_open(const char *path, int flags, int mode)
@@ -123,7 +125,7 @@ static ssize_t event_write(int fd, const void *data, size_t size)
     ++sEvent.mCounter;
     _lock_release_recursive(&sEvent.mLock);
 
-    if (sSignalSemaphore != NULL)
+    if (sSignalSemaphore.sem)
     {
         esp_vfs_select_triggered(sSignalSemaphore);
     }

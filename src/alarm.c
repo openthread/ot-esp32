@@ -37,6 +37,8 @@
 #include <esp_log.h>
 #include <esp_timer.h>
 
+#include <sys/time.h>
+
 #include <openthread/config.h>
 #include <openthread/platform/alarm-milli.h>
 #include <openthread/platform/diag.h>
