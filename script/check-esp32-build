@@ -31,7 +31,7 @@ set -euxo pipefail
 
 setup_esp_idf()
 {
-    git clone --branch release/v3.3 --recursive https://github.com/espressif/esp-idf.git
+    git clone --branch release/v4.0 --recursive https://github.com/espressif/esp-idf.git
     export IDF_PATH="$(pwd)"/esp-idf
 
     pip3 install wheel setuptools

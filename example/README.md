@@ -13,7 +13,7 @@ This example runs on Linux.
 Clone the [Espressif IoT Development Framework](https://github.com/espressif/esp-idf):
 
 ```shell
-git clone --recurse-submodules -j6 --branch release/v3.3 git@github.com:espressif/esp-idf.git
+git clone --recurse-submodules -j6 --branch release/v4.0 git@github.com:espressif/esp-idf.git
 ./esp-idf/install.sh
 ```
 
