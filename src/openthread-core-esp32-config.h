@@ -109,6 +109,16 @@
 #endif
 
 /**
+ * @def OPENTHREAD_CONFIG_IP6_SLAAC_ENABLE
+ *
+ * Define to 1 to enable IP6 SLAAC support.
+ *
+ */
+#ifndef OPENTHREAD_CONFIG_IP6_SLAAC_ENABLE
+#define OPENTHREAD_CONFIG_IP6_SLAAC_ENABLE 1
+#endif
+
+/**
  * @def OPENTHREAD_CONFIG_REFERENCE_DEVICE_ENABLE
  *
  * Define to 1 to enable Thread Test Harness reference device support.
